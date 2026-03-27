@@ -39,7 +39,7 @@ if [ "$SNNAP" == "SNAPSHOT" ]; then
 
 echo -e "${YELLOW} SNAPSHOT Version Detected ! ${NC}"
 
-rm -f passwalls.sh && wget https://raw.githubusercontent.com/amirhosseinchoghaei/Passwall/main/passwalls.sh && chmod 777 passwalls.sh && sh passwalls.sh
+rm -f passwalls.sh && wget https://raw.githubusercontent.com/hady2010/Passwall/main/passwalls.sh && chmod 777 passwalls.sh && sh passwalls.sh
 
 exit 1
 
@@ -51,56 +51,56 @@ fi
 
 ### Update Packages ###
 
-opkg update
+apk update
 
 ### Add Src ###
 
 wget -O passwall.pub https://master.dl.sourceforge.net/project/openwrt-passwall-build/passwall.pub
 
-opkg-key add passwall.pub
+apk-keys add passwall.pub
 
->/etc/opkg/customfeeds.conf
+>/etc/apk/repositories
 
 read release arch << EOF
 $(. /etc/openwrt_release ; echo ${DISTRIB_RELEASE%.*} $DISTRIB_ARCH)
 EOF
 for feed in passwall_luci passwall_packages passwall2; do
-  echo "src/gz $feed https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$release/$arch/$feed" >> /etc/opkg/customfeeds.conf
+  echo "https://master.dl.sourceforge.net/project/openwrt-passwall-build/releases/packages-$release/$arch/$feed" >> /etc/apk/repositories
 done
 
 ### Install package ###
 
-opkg update
+apk update
 sleep 3
-opkg remove dnsmasq
+apk del dnsmasq
 sleep 2
-opkg install dnsmasq-full
+apk add dnsmasq-full
 sleep 3
-opkg install unzip
+apk add unzip
 sleep 2
-opkg install luci-app-passwall
+apk add luci-app-passwall
 sleep 3
-opkg install ipset
+apk add ipset
 sleep 2
-opkg install ipt2socks
+apk add ipt2socks
 sleep 2
-opkg install iptables
+apk add iptables
 sleep 2
-opkg install iptables-legacy
+apk add iptables-legacy
 sleep 2
-opkg install iptables-mod-conntrack-extra
+apk add iptables-mod-conntrack-extra
 sleep 2
-opkg install iptables-mod-iprange
+apk add iptables-mod-iprange
 sleep 2
-opkg install iptables-mod-socket
+apk add iptables-mod-socket
 sleep 2
-opkg install iptables-mod-tproxy
+apk add iptables-mod-tproxy
 sleep 2
-opkg install kmod-ipt-nat
+apk add kmod-ipt-nat
 sleep 2
-opkg install kmod-nft-socket
+apk add kmod-nft-socket
 sleep 2
-opkg install kmod-nft-tproxy
+apk add kmod-nft-tproxy
 sleep 2
 
 >/etc/banner
@@ -143,9 +143,7 @@ exit 1
 
 fi
 
-DNS=`ls /usr/lib/opkg/info/dnsmasq-full.control`
-
-if [ "$DNS" == "/usr/lib/opkg/info/dnsmasq-full.control" ]; then
+if apk info -e dnsmasq-full >/dev/null; then
 
 echo -e "${GREEN} dnsmaq-full Installed successfully ! ${NC}"
 
@@ -161,7 +159,7 @@ fi
 
 
 ####install_xray
-opkg install xray-core
+apk add xray-core
 
 ## IRAN IP BYPASS ##
 
@@ -180,7 +178,7 @@ else
   echo "Stage 1 Passed"
 fi
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/iran-iplist/main/direct_ip
+wget https://raw.githubusercontent.com/hady2010/iran-iplist/main/direct_ip
 
 sleep 3
 
@@ -196,7 +194,7 @@ else
 
 fi
 
-wget https://raw.githubusercontent.com/amirhosseinchoghaei/iran-iplist/main/direct_host
+wget https://raw.githubusercontent.com/hady2010/iran-iplist/main/direct_host
 
 RESULT=`ls direct_ip`
             if [ "$RESULT" == "direct_ip" ]; then
@@ -223,7 +221,7 @@ echo -e "${GREEN} Xray OK ! ${NC}"
 
 echo -e "${YELLOW} Installing Xray On Temp Space ! ${NC}"
            
-rm -f amirhossein.sh && wget https://raw.githubusercontent.com/amirhosseinchoghaei/mi4agigabit/main/amirhossein.sh && chmod 777 amirhossein.sh && sh amirhossein.sh
+rm -f amirhossein.sh && wget https://raw.githubusercontent.com/hady2010/mi4agigabit/main/amirhossein.sh && chmod 777 amirhossein.sh && sh amirhossein.sh
 
 fi
 
